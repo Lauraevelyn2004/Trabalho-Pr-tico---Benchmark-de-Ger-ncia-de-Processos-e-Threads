@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Benchmark de Escalonamento - TP SO1</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Benchmark de Gerência de Processos e Threads</h1>
+            <p>Sistemas Operacionais 1 - Simulador e Comparador</p>
+        </header>
+
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab('single')">Simulador Individual</button>
+            <button class="tab-btn" onclick="switchTab('compare')">Comparação de Cargas</button>
+        </div>
+
+        <div id="tab-single" class="tab-content active">
+            <section class="input-section">
+                <h2>Carga de Trabalho (JSON)</h2>
+                <textarea id="jsonInput" rows="10">
+{
+  "processes": [
+    {
+      "pid": "P1",
+      "arrival_time": 0, "cpu_time": 15, "priority": 2,
+      "threads": [ { "tid": "T1", "arrival_time": 0, "cpu_time": 5, "priority": 1 } ]
+    }
+  ]
+}
+                </textarea>
+                <button onclick="runSingleBenchmark()">Executar Carga Atual</button>
+            </section>
+
+            <section class="results-section" id="single-results" style="display: none;">
+                <h2>Resultados da Carga</h2>
+                <div class="table-container">
+                    <table id="singleTable">
+                        <thead>
+                            <tr>
+                                <th>Algoritmo</th>
+                                <th>Espera Méd.</th>
+                                <th>Turnaround</th>
+                                <th>Throughput</th>
+                                <th>Trocas Contexto</th>
+                            </tr>
+                        </thead>
+                        <tbody id="singleTableBody"></tbody>
+                    </table>
+                </div>
+                
+                <div class="chart-container">
+                    <canvas id="singleChart"></canvas>
+                </div>
+
+                <div class="execution-order">
+                    <h2>Ordem de Execução na CPU</h2>
+                    <div id="executionPathsList"></div>
+                </div>
+            </section>
+        </div>
+
+        <div id="tab-compare" class="tab-content">
+            <section class="intro-section">
+                <h2>Comparativo de Cenários</h2>
+                <p>Esta aba executará automaticamente os 5 algoritmos contra as 3 cargas de trabalho predefinidas (Comboio, Alta Concorrência e Micro-operações) para cruzar os resultados de Turnaround Médio (ms).</p>
+                <button onclick="runBatchComparison()" style="background-color: #9b59b6;">Executar Comparação em Lote</button>
+            </section>
+
+            <section class="results-section" id="batch-results" style="display: none;">
+                <h2>Tabela Cruzada (Turnaround Médio em ms)</h2>
+                <div class="table-container">
+                    <table id="batchTable">
+                        <thead>
+                            <tr>
+                                <th>Carga de Trabalho</th>
+                                <th>FCFS</th>
+                                <th>SJF</th>
+                                <th>Prioridade</th>
+                                <th>Round Robin</th>
+                                <th>Múltiplas Filas</th>
+                            </tr>
+                        </thead>
+                        <tbody id="batchTableBody"></tbody>
+                    </table>
+                </div>
+
+                <h2>Gráfico Comparativo de Cargas</h2>
+                <div class="chart-container">
+                    <canvas id="batchChart"></canvas>
+                </div>
+            </section>
+        </div>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>
